@@ -1,15 +1,7 @@
 a = input()
-k = int(a[:2])
-a = a.replace(" ", "")
+k = int(a[:2:]) - 1
+s = a[2::].replace(" ", "")
 
+s = s[:k:] + s[k+1::]
 
-def remove(string, index):
-    s = list(string)
-    del s[index]
-    del s[0]
-    if k > 9:
-        del s[0]
-    return "".join(s)
-
-
-print(remove(a, k))
+print(s)
