@@ -1,9 +1,7 @@
-k = int(input())
-lvl = 0
+s = input()
 
-while k > 0:
-    if k >= lvl + 1:
-        lvl += 1
-    k -= lvl
-
-print(lvl)
+index = s.find("0")
+if index == -1:
+    print('YES')
+else:
+    print('NO')
