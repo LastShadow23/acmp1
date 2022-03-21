@@ -1,8 +1,6 @@
 a = input()
 
 if a == a[::-1]:
-    res = 'YES'
+    print('YES')
 else:
-    res = 'NO'
-
-print(res)
+    print('NO')
