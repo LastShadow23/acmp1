@@ -1,34 +1,27 @@
 my_dict = {}
 full_dict = {}
-key = 0
-press = 0
 
-for i in range(1, 10):
-    my_dict.clear()
-    key += 1
-    s = input()
-    click = 0
-    for letter in s:
-        click += 1
-        my_dict[letter] = my_dict.get(letter, {'click': click, 'key': key})
-        full_dict.update(my_dict)
+for key in range(1, 10):
+    s = list(input())
+    full_dict.update({letter: {"click": click + 1, "key": key} for click, letter in enumerate(s)})
 
 msg = input()
 
 up_index = False
 temp_up_index = True
-key_num_old = 50
+key_num_old = 10
+press = 0
 
 for a in msg:
     if a == ' ':
         press += 1
-        key_num_old = 50
+        key_num_old = 10
         continue
 
-    if full_dict.get(a, None):
-        if full_dict.get(a).get('key') == 1:
-            click_num = full_dict.get(a).get('click')
-            key_num = 1
+    if full_dict.get(a):
+        if full_dict[a]['key'] == 1:
+            click_num = full_dict[a]['click']
+            key_num = full_dict[a]['key']
             if key_num_old == key_num:
                 press += 1
             key_num_old = key_num
@@ -37,7 +30,7 @@ for a in msg:
                 temp_up_index = True
             continue
 
-    if not full_dict.get(a, None):
+    if not full_dict.get(a):
         if temp_up_index:
             a = a.lower()
             temp_up_index = False
@@ -54,8 +47,8 @@ for a in msg:
             temp_up_index = False
             press += 1
 
-    click_num = full_dict.get(a).get('click')
-    key_num = full_dict.get(a).get('key')
+    click_num = full_dict[a]['click']
+    key_num = full_dict[a]['key']
 
     if key_num_old == key_num:
         press += 1
