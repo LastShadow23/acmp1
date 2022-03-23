@@ -1,8 +1,8 @@
 keyboard = {}
 
 for key in range(1, 10):
-    s = list(input())
-    keyboard.update({letter: {"click": click + 1, "key": key} for click, letter in enumerate(s)})
+    for click, letter in enumerate(input(), 1):
+        keyboard[letter] = {"click": click, "key": key}
 
 msg = input()
 
