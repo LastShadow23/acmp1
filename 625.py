@@ -1,4 +1,3 @@
-my_dict = {}
 full_dict = {}
 
 for key in range(1, 10):
