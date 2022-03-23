@@ -19,12 +19,12 @@ up_index = False
 temp_up_index = True
 key_num_old = 50
 
-len_m = len(msg)
-msg = msg.replace(' ', "")
-press = len_m - len(msg)
-print("after", press)
-
 for a in msg:
+    if a == ' ':
+        press += 1
+        key_num_old = 50
+        continue
+
     if full_dict.get(a, None):
         if full_dict.get(a).get('key') == 1:
             click_num = full_dict.get(a).get('click')
@@ -32,13 +32,11 @@ for a in msg:
             if key_num_old == key_num:
                 press += 1
             key_num_old = key_num
-            print("c", press)
             press += click_num
-            print("b", press)
             if not up_index:
                 temp_up_index = True
             continue
-    print("after ?", press)
+
     if not full_dict.get(a, None):
         if temp_up_index:
             a = a.lower()
@@ -58,14 +56,12 @@ for a in msg:
 
     click_num = full_dict.get(a).get('click')
     key_num = full_dict.get(a).get('key')
+
     if key_num_old == key_num:
         press += 1
+
     key_num_old = key_num
     press += click_num
 
-
 print(press)
-
-
-
 
