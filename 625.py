@@ -1,8 +1,8 @@
-full_dict = {}
+keyboard = {}
 
 for key in range(1, 10):
     s = list(input())
-    full_dict.update({letter: {"click": click + 1, "key": key} for click, letter in enumerate(s)})
+    keyboard.update({letter: {"click": click + 1, "key": key} for click, letter in enumerate(s)})
 
 msg = input()
 
@@ -17,10 +17,10 @@ for a in msg:
         key_num_old = 10
         continue
 
-    if full_dict.get(a):
-        if full_dict[a]['key'] == 1:
-            click_num = full_dict[a]['click']
-            key_num = full_dict[a]['key']
+    if keyboard.get(a):
+        if keyboard[a]['key'] == 1:
+            click_num = keyboard[a]['click']
+            key_num = keyboard[a]['key']
             if key_num_old == key_num:
                 press += 1
             key_num_old = key_num
@@ -29,7 +29,7 @@ for a in msg:
                 temp_up_index = True
             continue
 
-    if not full_dict.get(a):
+    if not keyboard.get(a):
         if temp_up_index:
             a = a.lower()
             temp_up_index = False
@@ -46,8 +46,8 @@ for a in msg:
             temp_up_index = False
             press += 1
 
-    click_num = full_dict[a]['click']
-    key_num = full_dict[a]['key']
+    click_num = keyboard[a]['click']
+    key_num = keyboard[a]['key']
 
     if key_num_old == key_num:
         press += 1
@@ -56,4 +56,3 @@ for a in msg:
     press += click_num
 
 print(press)
-
