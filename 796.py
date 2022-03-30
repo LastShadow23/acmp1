@@ -1,70 +1,78 @@
-list_of_lines = []
-text = []
-punctuation = [',', '.', '?', '!', '-', ':', "'"]
+import re
 
+marks = "-,.?!=:'"
 
-with open("input.txt", "r") as f:
+prgh = []
 
-    while True:
-        line = f.readline()
+with open("INPUT.TXT", "r") as file:
+    w, b = map(int, file.readline().split())
 
-        while " " * 2 in line:
-            line = line.replace(" " * 2, " ")
+    # get paragraphs from text
+    el = ""
+    for line in file:
 
-        for index in punctuation:
-            line = line.replace(" " + index, index)
+        if line == '\n':
+            prgh.append(el)
+            el = ""
+            continue
 
-        if not line:
-            break
+        # add extra spaces to punctuation mark symbol
+        for mark in marks:
+            line = line.replace(mark, mark + " ")
 
-        list_of_lines.append(line)
+        el += line
 
-w, b = (map(int, list_of_lines[0].split()))
-list_of_lines.pop(0)
-indent = ' ' * b
-list_of_lines[0] = indent + list_of_lines[0]
+    prgh.append(el)
 
-for num, line in enumerate(list_of_lines):
+indent = " " * (b - 1)  # one less
 
-    for index in punctuation:
+tmp = []
+words = []
+word_pttrn = re.compile(f"[{marks}\w]+")
 
-        for i, check in enumerate(line):
-            if check == index and i + 1 < len(line):
-                if line[i+1] == " " or line[i + 1] in punctuation:
-                    continue
-                else:
-                    line = line[:i] + index + " " + line[i + 1:]
+for el in prgh:
 
-    if line == '\n' or line == indent + '\n':
-        if num + 1 < len(list_of_lines):
-            list_of_lines[num + 1] = indent + list_of_lines[num + 1]
+    if not el:
+        continue
+
+    # divide paragraphs into list of words
+    tmp = re.findall(word_pttrn, el)
+
+    i = 1
+    while i < len(tmp):
+        word = tmp[i]
+
+        if word in marks:
+            # concat words and marks in the list
+            tmp[i - 1] += tmp.pop(i)
+            i -= 1
+        i += 1
+
+    # add nextline symbol after paragraph
+    # and extend our words-list
+    tmp.append("\n")
+    words.extend(tmp)
+
+# build result text string
+res_text = ""
+buf = indent
+cur_len = len(indent)
+for word in words:
+
+    if word == "\n":
+        res_text += buf + "\n"
+        buf = indent
+        cur_len = len(indent)
+        continue
+
+    if cur_len + len(word) + 1 > w:
+        res_text += buf + "\n"
+        buf = word
+        cur_len = len(buf)
     else:
-        text.append(line.rstrip('\n').rstrip())
+        buf += " " + word
+        cur_len += 1 + len(word)
 
-text_new = " ".join(text).split("     ")
-
-skip = 0
-
-for line in text_new:
-    line = indent + line.strip()
-    count = 0
-    start = 0
-    iterr_line = list(line)
-
-    while count != len(iterr_line):
-        if iterr_line[count] == " ":
-            if count - start >= w:
-                if iterr_line[count+1] == " ":
-                    skip = count
-                    continue
-                else:
-                    iterr_line[skip] = "\n"
-                    start = skip
-            skip = count
-
-        count += 1
-    print("".join(iterr_line))
-
-
-
+with open("OUTPUT.TXT", "w") as file:
+    file.write(res_text)
 
